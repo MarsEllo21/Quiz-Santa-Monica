@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esame Regolamento Santa Monica</title>
+<style>
+:root{
+  --bg:#08111d; --panel:#0e1b2a; --panel2:#122238; --text:#f5f7fa; --muted:#9fb1c5;
+  --accent:#ff8c5a; --accent2:#4fd1c5; --green:#4ade80; --red:#fb7185; --line:#203a56;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; color:var(--text);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(79,209,197,.12),transparent 28%),
+    radial-gradient(circle at 90% 0%,rgba(255,140,90,.13),transparent 30%),
+    linear-gradient(180deg,#07101b,#0a1725 55%,#07111d);
+}
+.wrap{max-width:1000px;margin:auto;padding:26px 16px 60px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-weight:900;font-size:22px;
+background:linear-gradient(135deg,var(--accent),#ffb46c);color:#24130c;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+h1{margin:0;font-size:clamp(26px,4vw,42px);line-height:1.05}
+.sub{margin:6px 0 0;color:var(--muted)}
+.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px;white-space:nowrap}
+.card{background:linear-gradient(180deg,rgba(18,34,56,.97),rgba(12,25,40,.97));border:1px solid var(--line);
+border-radius:22px;box-shadow:0 18px 50px rgba(0,0,0,.35);overflow:hidden}
+.screen{display:none;padding:28px}
+.screen.active{display:block}
+h2{margin:0 0 12px}
+p{line-height:1.55}
+.muted{color:var(--muted)}
+.controls{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;margin-top:22px}
+label{display:block;margin-bottom:7px;font-weight:800}
+select,button{font:inherit}
+select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:#091827;color:var(--text)}
+.btn{border:0;border-radius:13px;padding:12px 18px;font-weight:900;cursor:pointer;transition:.15s ease}
+.btn:hover{transform:translateY(-1px)}
+.primary{background:linear-gradient(135deg,var(--accent),#ffb46c);color:#24130c}
+.secondary{background:#152b43;color:var(--text);border:1px solid #284a69}
+.quiztop{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:center}
+.progressText{font-weight:900;white-space:nowrap}
+.track{height:8px;flex:1;background:#07111d;border-radius:999px;overflow:hidden}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:.2s}
+.qbody{padding:28px}
+.category{color:var(--accent2);font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.question{font-size:clamp(21px,3vw,30px);font-weight:900;line-height:1.25;margin:8px 0 22px}
+.options{display:grid;gap:12px}
+.option{border:1px solid var(--line);background:#0a1827;border-radius:15px;padding:14px 16px;display:flex;gap:12px;cursor:pointer}
+.option:hover{border-color:#3e6483;background:#0d2032}
+.option.sel{border-color:var(--accent2);box-shadow:0 0 0 2px rgba(79,209,197,.12);background:#0d2531}
+.dot{width:22px;height:22px;border-radius:50%;border:2px solid #54758f;flex:0 0 22px;margin-top:1px;display:grid;place-items:center}
+.option.sel .dot{border-color:var(--accent2)}
+.option.sel .dot:after{content:"";width:10px;height:10px;border-radius:50%;background:var(--accent2)}
+.actions{display:flex;justify-content:space-between;gap:12px;margin-top:24px}
+.score{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:18px;background:#0a1827;margin:18px 0 24px}
+.ring{width:116px;height:116px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(var(--accent2) 0deg,#22384c 0deg)}
+.ring:before{content:"";position:absolute;inset:10px;border-radius:50%;background:#0a1827}
+.ring span{position:relative;font-size:28px;font-weight:900}
+.score strong{font-size:22px}
+.review{display:grid;gap:14px}
+.reviewItem{border:1px solid var(--line);border-radius:16px;padding:16px;background:#0a1827}
+.reviewItem.ok{border-left:4px solid var(--green)}
+.reviewItem.bad{border-left:4px solid var(--red)}
+.reviewItem h3{margin:0 0 8px;font-size:17px}
+.good{color:var(--green);font-weight:900}
+.badtxt{color:var(--red);font-weight:900}
+.small{font-size:13px;color:var(--muted)}
+footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+@media(max-width:680px){
+  .header{display:block}.pill{display:inline-block;margin-top:14px}.controls{grid-template-columns:1fr}
+  .score{grid-template-columns:1fr;text-align:center}.ring{margin:auto}.quiztop{align-items:flex-start;flex-direction:column}.track{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="brand">
+      <div class="logo">SM</div>
+      <div>
+        <h1>Esame Regolamento Santa Monica</h1>
+        <p class="sub">Quiz di studio non ufficiale • 1 risposta corretta + 2 errate</p>
+      </div>
+    </div>
+    <div class="pill">Standalone HTML • funziona offline</div>
+  </div>
+
+  <div class="card">
+    <section id="start" class="screen active">
+      <h2>Preparazione esame</h2>
+      <p class="muted">Le domande sono basate sul regolamento fornito. A ogni tentativo vengono mescolati sia l'ordine delle domande sia quello delle risposte. Alla fine vedrai il punteggio, gli errori, la risposta corretta e la spiegazione.</p>
+      <div class="controls">
+        <div>
+          <label for="count">Numero di domande</label>
+          <select id="count">
+            <option value="15">15 domande — rapido</option>
+            <option value="25" selected>25 domande — consigliato</option>
+            <option value="40">40 domande — avanzato</option>
+            <option value="all">Tutte le domande</option>
+          </select>
+        </div>
+        <button id="startBtn" class="btn primary">Inizia esame</button>
+      </div>
+      <p class="small">Il punteggio è uno strumento di allenamento e non rappresenta una soglia ufficiale di whitelist.</p>
+    </section>
+
+    <section id="quiz" class="screen" style="padding:0">
+      <div class="quiztop">
+        <div id="progressText" class="progressText"></div>
+        <div class="track"><div id="bar" class="bar"></div></div>
+      </div>
+      <div class="qbody">
+        <div id="category" class="category"></div>
+        <div id="question" class="question"></div>
+        <div id="options" class="options"></div>
+        <div class="actions">
+          <button id="prev" class="btn secondary">Indietro</button>
+          <button id="next" class="btn primary">Avanti</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <h2>Risultato finale</h2>
+      <div class="score">
+        <div id="ring" class="ring"><span id="pct">0%</span></div>
+        <div>
+          <strong id="scoreText"></strong>
+          <p id="scoreMsg" class="muted"></p>
+        </div>
+      </div>
+      <div id="review" class="review"></div>
+      <div class="actions">
+        <button id="restart" class="btn secondary">Nuovo esame</button>
+        <button id="retryWrong" class="btn primary">Ripassa solo gli errori</button>
+      </div>
+    </section>
+  </div>
+  <footer>Santa Monica RP — strumento di studio personale, non ufficiale.</footer>
+</div>
+
+<script>
+const BANK = [{"cat": "Regole Generali", "q": "Qual è lo spirito principale del server?", "correct": "Permettere a tutti di giocare in modo spensierato, libero e divertente, creando un ambiente sano e piacevole.", "wrong": ["Favorire chi punta soprattutto a vincere le scene.", "Premiare chi accumula più denaro e oggetti nel minor tempo possibile."], "ex": "Lo spirito del server mette al centro il divertimento condiviso e un ambiente sano; lo Staff può intervenire quando il comportamento di qualcuno compromette l’esperienza altrui."}, {"cat": "Regole Generali", "q": "Come viene considerata la mentalità tryhard?", "correct": "Non è ben accetta se finalizzata unicamente a vincere o prevalere sugli altri.", "wrong": ["È ammessa nelle scene criminali ad alto rischio.", "È sempre consentita se non vengono usati cheat."], "ex": "Azioni fatte solo per ottenere vantaggi, informazioni o oggetti senza creare storia non rispettano lo spirito del server."}, {"cat": "Regole Generali", "q": "Cosa bisogna rispettare riguardo Twitch?", "correct": "I T.O.S. di Twitch e le relative linee guida.", "wrong": ["Solo le regole interne del server.", "I T.O.S. solo se si sta facendo una live con più di 100 spettatori."], "ex": "Il regolamento richiede espressamente il rispetto dei T.O.S. di Twitch."}, {"cat": "Regole Generali", "q": "Cosa prevede il regolamento su tossicità e flame?", "correct": "Non sono tollerati né tra player né verso lo Staff.", "wrong": ["Sono consentiti fuori dal gioco.", "Sono ammessi durante le rivalità tra fazioni."], "ex": "Tossicità e flame possono portare a provvedimenti, fino al permaban nei casi più gravi."}, {"cat": "Regole Generali", "q": "Quale uso di mod o software è vietato?", "correct": "Mod grafiche o risoluzioni innaturali che diano vantaggi e software che alterino il normale timbro di voce.", "wrong": ["Qualunque modifica estetica, anche senza vantaggi.", "Solo i software che cambiano voce durante le rapine."], "ex": "Sono vietati strumenti che alterano ingiustamente l’esperienza di gioco o il normale timbro vocale."}, {"cat": "Regole Generali", "q": "Se scopri un bug che può dare vantaggi, cosa devi fare?", "correct": "Non abusarne e segnalarlo tramite ticket.", "wrong": ["Usarlo una volta per testarlo e poi segnalarlo.", "Condividerlo con la propria fazione per verificare se funziona."], "ex": "L’abuso volontario e perseverato di bug è vietato; i bug vanno segnalati allo Staff."}, {"cat": "Principi Fondamentali RP", "q": "Come possono essere usate le informazioni ottenute legittimamente in-game?", "correct": "Per evolvere la propria storia e creare gioco, senza chiudere ingiustamente l’esperienza altrui.", "wrong": ["Solo dopo autorizzazione dello Staff.", "Per chiudere rapidamente la storia altrui purché l’informazione sia vera."], "ex": "Le informazioni legittime servono ad ampliare le trame narrative, non a concludere in modo tossico o frettoloso il gioco altrui."}, {"cat": "Principi Fondamentali RP", "q": "Quale comportamento può portare a sanzioni severe per Fair Play?", "correct": "Usare Metagame o forzature RP per ottenere vantaggi o rovinare il gioco altrui.", "wrong": ["Perdere una scena contro un’altra fazione.", "Rifiutare di partecipare a un evento pubblico."], "ex": "Metagame e forzature usate in modo scorretto possono portare anche a Permadeath o Permaban, in base alla gravità."}, {"cat": "Principi Fondamentali RP", "q": "Cosa significa evitare il Powerplay?", "correct": "Non imporsi sugli altri fino al punto da impedirgli di poter scegliere il proprio destino.", "wrong": ["Evitare sempre qualsiasi conflitto.", "Non usare mai un’arma durante una scena."], "ex": "Il Powerplay consiste nel togliere eccessivamente possibilità di scelta agli altri giocatori."}, {"cat": "Principi Fondamentali RP", "q": "Quale esempio è Metagame?", "correct": "Usare in gioco un’informazione appresa da Discord, Twitch, video o altra fonte esterna.", "wrong": ["Ricordare una conversazione avvenuta in-game.", "Riconoscere una voce già sentita a lungo dal proprio PG."], "ex": "Il PG conosce solo ciò che vive e sente in gioco."}, {"cat": "Principi Fondamentali RP", "q": "Cosa stabilisce la regola RDM / VDM?", "correct": "Non sono tollerati atterramenti o uccisioni senza valido contesto RP.", "wrong": ["Sono vietate solo le uccisioni tramite veicolo.", "Sono ammessi atterramenti senza contesto se non viene effettuato loot."], "ex": "Ogni atterramento o uccisione deve avere un valido contesto RP."}, {"cat": "Principi Fondamentali RP", "q": "Esistono Safe Zone nel server?", "correct": "No, non ci sono zone sicure.", "wrong": ["Sì, ospedali e stazioni di polizia sono sempre Safe Zone.", "Sì, ma solo di notte."], "ex": "Il regolamento specifica che non esistono Safe Zone."}, {"cat": "Principi Fondamentali RP", "q": "Una maschera rende automaticamente il PG totalmente irriconoscibile?", "correct": "No, tatuaggi, accento, modi di dire, vestiti e voce già conosciuta possono essere indizi.", "wrong": ["Sì, una maschera impedisce sempre ogni riconoscimento.", "No, ma si può riconoscere soltanto dal veicolo."], "ex": "La maschera non cancella tutti gli elementi identificativi del personaggio."}, {"cat": "Principi Fondamentali RP", "q": "Quando è consentito riconoscere una voce?", "correct": "Quando il proprio PG l’ha già sentita per un tempo sufficiente a determinarne con certezza l’identità.", "wrong": ["Sempre, anche se sentita una sola volta per pochi secondi.", "Solo se il soggetto non indossa una maschera."], "ex": "Il regolamento consente il riconoscimento della voce solo se esiste una conoscenza pregressa sufficiente."}, {"cat": "Principi Fondamentali RP", "q": "Come vanno descritte le ferite ricevute?", "correct": "Con precisione tramite il comando /desc.", "wrong": ["Solo a voce, senza usare comandi.", "Soltanto se un medico lo chiede."], "ex": "In caso di ferimento bisogna specificare con precisione le ferite tramite /desc."}, {"cat": "Principi Fondamentali RP", "q": "Dopo un respawn, cosa si può ricordare?", "correct": "Gli eventi precedenti, ma va ruolato un malessere proporzionato e non si può tornare subito a vendicarsi.", "wrong": ["Nulla: si dimentica sempre tutto.", "Tutto, e si può tornare subito in azione."], "ex": "La memoria resta, ma il trauma va interpretato e la vendetta immediata è vietata."}, {"cat": "Principi Fondamentali RP", "q": "Cosa serve per una richiesta di Permadeath?", "correct": "Ticket, motivazioni estremamente gravi e rilevanti, valido contesto RP e clip.", "wrong": ["Basta una rivalità durata tre giorni.", "È sufficiente l’accordo tra le due parti."], "ex": "Il Permadeath è un punto di arrivo narrativo e richiede documentazione e motivazioni solide."}, {"cat": "Principi Fondamentali RP", "q": "Quanti tentativi di ingaggio sono previsti in una scena Permadeath?", "correct": "Uno solo.", "wrong": ["Tre.", "Illimitati finché la scena non riesce."], "ex": "Il regolamento prevede un solo tentativo; il fallimento ha conseguenze RP."}, {"cat": "Principi Fondamentali RP", "q": "Se vieni atterrato durante una scena Permadeath, cosa devi fare?", "correct": "Aprire un ticket e ruolare il coma per 24 ore.", "wrong": ["Respawnare e rientrare dopo un’ora.", "Considerare automaticamente annullato il Permadeath."], "ex": "In quella situazione va aperto un ticket e interpretato un coma di 24 ore."}, {"cat": "Principi Fondamentali RP", "q": "Discussioni futili o semplici beef sono motivazioni valide per un Permadeath?", "correct": "No.", "wrong": ["Sì, se durano più di una settimana.", "Sì, se una fazione ha già perso almeno due membri."], "ex": "Il regolamento esclude espressamente discussioni futili e semplici beef dalle motivazioni valide."}, {"cat": "Principi Fondamentali RP", "q": "Cosa vieta la regola sul saccheggio?", "correct": "Svuotare completamente l’inventario al solo scopo di impoverire o infastidire l’avversario.", "wrong": ["Prendere qualunque oggetto durante una scena criminale.", "Lootare un’arma quando la scena lo giustifica."], "ex": "Il loot deve essere motivato e proporzionato."}, {"cat": "Principi Fondamentali RP", "q": "Cosa può accadere con il Perma Evading reiterato e ingiustificato?", "correct": "Si può arrivare a provvedimenti fino al permaban.", "wrong": ["Si perde automaticamente il veicolo personale.", "Si riceve solo una multa IC."], "ex": "Evitare la connessione per sfuggire a un Permadeath può portare a provvedimenti gravi."}, {"cat": "Principi Fondamentali RP", "q": "Dopo un wipe, il nuovo PG può avere collegamenti con la storia del precedente?", "correct": "No.", "wrong": ["Sì, ma solo familiari.", "Sì, purché non recuperi denaro o proprietà."], "ex": "Il wipe chiude il personaggio precedente; il nuovo PG non può avere collegamenti con quella storia."}, {"cat": "Rispetto e Fama", "q": "Qual è il vertice della gerarchia del Sistema del Rispetto e della Fama?", "correct": "La Giustizia.", "wrong": ["La Figura Influente.", "Il soggetto con più Stelle Wanted."], "ex": "Nessun personaggio può trovarsi al di sopra della Giustizia."}, {"cat": "Rispetto e Fama", "q": "Qual è l’ordine corretto dei livelli dall’alto verso il basso?", "correct": "Giustizia → Figura Influente → Persona Riconosciuta → Cittadino.", "wrong": ["Figura Influente → Giustizia → Cittadino → Persona Riconosciuta.", "Giustizia → Persona Riconosciuta → Figura Influente → Cittadino."], "ex": "Questa è la gerarchia prevista dal regolamento."}, {"cat": "Rispetto e Fama", "q": "Il livello determina automaticamente l’esito di una scena?", "correct": "No, non dà immunità da Fear, Powerplay o buon senso.", "wrong": ["Sì, il livello superiore vince sempre.", "Sì, ma solo se il soggetto è Figura Influente."], "ex": "Il livello pesa socialmente e narrativamente, ma non decide automaticamente la scena."}, {"cat": "Rispetto e Fama", "q": "Come si ottiene un livello superiore?", "correct": "Attraverso reputazione, continuità e impatto concreto del proprio RP.", "wrong": ["Con una certa quantità di denaro.", "Dopo un numero prestabilito di ore in città."], "ex": "Tempo, denaro, numero di azioni e numero di conoscenze non bastano da soli."}, {"cat": "Rispetto e Fama", "q": "Cosa significa Anti-Farming della fama?", "correct": "Le azioni irrilevanti non fanno salire automaticamente di livello: la fama si costruisce.", "wrong": ["È vietato fare lavori ripetitivi.", "È vietato partecipare a più di un evento al giorno."], "ex": "La fama deriva da percorso, rilevanza e impatto, non dal semplice accumulo di azioni."}, {"cat": "Rispetto e Fama", "q": "Si può pretendere Fear o rispetto da chi non ha motivo RP di conoscere la propria fama?", "correct": "No.", "wrong": ["Sì, se si è Figura Influente.", "Sì, se lo Staff ha già assegnato lo status."], "ex": "La conoscibilità deve emergere dal Roleplay."}, {"cat": "Rispetto e Fama", "q": "La reputazione può diminuire?", "correct": "Sì, se il personaggio perde rilevanza o non mantiene più una presenza coerente con il livello raggiunto.", "wrong": ["No, una volta ottenuta resta per sempre.", "Solo dopo un Permadeath."], "ex": "Lo status è dinamico e può anche diminuire."}, {"cat": "Criminalità e Polizia", "q": "Qual è il numero massimo di membri di una fazione criminale?", "correct": "8.", "wrong": ["6.", "10."], "ex": "Otto è anche il numero massimo di persone della fazione in azione."}, {"cat": "Criminalità e Polizia", "q": "Cosa serve per compiere furti o scassi?", "correct": "Un background o un’evoluzione criminale coerente.", "wrong": ["Almeno 2 Stelle Wanted.", "Essere obbligatoriamente membri di una fazione."], "ex": "Furti e scassi devono essere coerenti con il percorso criminale del personaggio."}, {"cat": "Criminalità e Polizia", "q": "Un veicolo rubato può diventare definitivamente di proprietà del ladro?", "correct": "No, dopo qualche giorno deve tornare al legittimo proprietario tramite soluzione RP coerente.", "wrong": ["Sì, se viene cambiata targa.", "Sì, dopo 24 ore."], "ex": "Il furto non può trasformarsi in appropriazione definitiva."}, {"cat": "Criminalità e Polizia", "q": "Cosa non è consentito quando si svaligia una proprietà?", "correct": "Prosciugare completamente beni e depositi per azzerare i progressi del proprietario.", "wrong": ["Rubare beni coerenti con la scena.", "Effettuare uno scasso con un BG criminale coerente."], "ex": "Svuotare completamente una proprietà è considerato saccheggio."}, {"cat": "Criminalità e Polizia", "q": "Le alleanze tra fazioni criminali sono liberamente consentite?", "correct": "No, sono principalmente vietate e le collaborazioni richiedono un solido trascorso RP.", "wrong": ["Sì, se non superano 16 persone.", "Sì, se servono a contrastare la polizia."], "ex": "Non si possono creare alleanze improvvisate per prevalere numericamente o militarmente."}, {"cat": "Criminalità e Polizia", "q": "Cosa rischia chi si intromette in un’azione criminale in corso senza esserne coinvolto?", "correct": "Può incorrere nel Permadeath se viene atterrato.", "wrong": ["Riceve automaticamente una Stella Wanted.", "Viene espulso dalla fazione per 24 ore."], "ex": "L’intromissione espone a conseguenze molto serie in caso di atterramento."}, {"cat": "Criminalità e Polizia", "q": "Come deve essere presa una vittima durante un rapimento?", "correct": "Cosciente oppure stordita con l’apposita neutralizzazione alle spalle.", "wrong": ["Sempre atterrata con arma da fuoco.", "Solo dopo averla investita."], "ex": "L’obiettivo del rapimento è generare gioco per entrambe le parti."}, {"cat": "Criminalità e Polizia", "q": "Una durata eccessiva del rapimento può essere considerata cosa?", "correct": "Powerplay.", "wrong": ["Metagame.", "RDM."], "ex": "Il regolamento specifica che un rapimento eccessivamente lungo può essere sanzionato come Powerplay."}, {"cat": "Criminalità e Polizia", "q": "Le attività sono rapinabili?", "correct": "Sì, nei limiti del buon senso e con gli ostaggi mantenuti sul luogo dell’azione.", "wrong": ["No, solo banche e 24/7.", "Sì, ma solo con autorizzazione preventiva dello Staff."], "ex": "Il regolamento stabilisce che ogni attività è rapinabile nel rispetto delle condizioni previste."}, {"cat": "Criminalità e Polizia", "q": "Quando è consentito sparare dal veicolo o bucare le ruote?", "correct": "Da fermi o a velocità ridotta, come avvertimento e senza intento di atterrare o uccidere.", "wrong": ["A qualsiasi velocità purché si miri alle ruote.", "Solo dopo che l’altro veicolo ha sparato."], "ex": "Il drive-by è fortemente limitato e deve avere funzione di avvertimento."}, {"cat": "Criminalità e Polizia", "q": "Quando inizia un ingaggio?", "correct": "Al primo evidente segnale di conflitto, verbale, fisico o con arma da fuoco.", "wrong": ["Solo al primo colpo di arma da fuoco.", "Solo quando qualcuno dichiara verbalmente 'ingaggio'."], "ex": "L’ingaggio nasce dal primo chiaro segnale di conflitto."}, {"cat": "Criminalità e Polizia", "q": "Come devono essere considerate le armi durante un ingaggio?", "correct": "L’ultima risorsa a disposizione.", "wrong": ["La prima opzione in caso di minaccia.", "Obbligatorie se l’altra parte è in superiorità numerica."], "ex": "Il regolamento specifica che l’uso delle armi deve essere l’ultima risorsa."}, {"cat": "Criminalità e Polizia", "q": "Chi apre un ingaggio cosa si assume automaticamente?", "correct": "La responsabilità della sua escalation.", "wrong": ["Il diritto di decidere quando la scena termina.", "L’immunità da Permadeath."], "ex": "Chi dà inizio al conflitto si assume la responsabilità dell’escalation."}, {"cat": "Criminalità e Polizia", "q": "La corruzione può essere ruolata liberamente senza autorizzazione?", "correct": "No, deve essere autorizzata tramite ticket.", "wrong": ["Sì, purché riguardi piccole somme.", "Sì, ma solo dai Pubblici Ufficiali."], "ex": "La corruzione richiede ticket, contesto, soggetti coinvolti e obiettivo."}, {"cat": "Criminalità e Polizia", "q": "Come deve evolvere una corruzione?", "correct": "Gradualmente: piccoli favori o somme, poi favori più importanti, fino a eventuale corruzione sistemica.", "wrong": ["Può partire subito da corruzione sistemica.", "Deve limitarsi sempre e soltanto a piccole somme."], "ex": "La progressione deve essere coerente e chi è corrotto deve ruolare fear nell’essere scoperto."}, {"cat": "Criminalità e Polizia", "q": "Le FDO hanno un limite numerico fisso generale durante gli interventi?", "correct": "No, ma devono seguire i superiori e proporzionare l’intervento alla situazione.", "wrong": ["Sì, massimo 8 agenti.", "Sì, devono essere sempre in numero pari ai criminali."], "ex": "Non c’è un limite fisso generale, ma gli interventi irrealistici o sproporzionati possono avere conseguenze."}, {"cat": "Criminalità e Polizia", "q": "Qual è il limite per le rapine ai 24/7 e negozietti?", "correct": "Massimo 2 criminali e 2 poliziotti.", "wrong": ["Massimo 4 criminali e 4 poliziotti.", "Nessun limite."], "ex": "Per queste rapine il limite previsto è 2 contro 2."}, {"cat": "Criminalità e Polizia", "q": "Quali ostaggi sono consentiti nei 24/7 e negozietti?", "correct": "Solo NPC.", "wrong": ["Solo player.", "Sia NPC sia player senza limiti."], "ex": "Il regolamento consente esclusivamente NPC come ostaggi nei 24/7 e nei negozietti."}, {"cat": "Criminalità e Polizia", "q": "Per le rapine alle banche o alle attività esiste un limite numerico specifico?", "correct": "No, salvo il limite della fazione e le regole sull’intervento FDO.", "wrong": ["Sì, massimo 4 criminali e 4 agenti.", "Sì, massimo 6 criminali e 6 agenti."], "ex": "Per banche e attività non c’è un limite specifico aggiuntivo rispetto alle regole generali."}, {"cat": "Criminalità e Polizia", "q": "Quale di questi è classificato come crimine grave con rischio Permadeath?", "correct": "Assalto alle autorità e/o rapimento di un Pubblico Ufficiale.", "wrong": ["Furto d’auto.", "Truffa."], "ex": "Tra i crimini gravi figurano assalto alle autorità/rapimento di P.U., rapina alla banca centrale e violazione di case con rischio durante il fatto."}, {"cat": "Criminalità e Polizia", "q": "Un personaggio criminale può farmare sistematicamente lavori NO-WL?", "correct": "No, se incoerente con il BG può essere considerato Fail RP.", "wrong": ["Sì, senza limiti.", "Sì, purché il lavoro sia legale."], "ex": "Lo spamming di lavori NO-WL per puro farming, se incoerente con il BG criminale, è vietato."}, {"cat": "Wanted System", "q": "Chi assegna le Stelle Wanted?", "correct": "Esclusivamente Staff e Master.", "wrong": ["La Polizia tramite MDT.", "La Procura al termine delle indagini."], "ex": "L’assegnazione delle Stelle Wanted è di esclusiva competenza di Staff e Master."}, {"cat": "Wanted System", "q": "Cosa comporta in generale l’aumento delle Stelle Wanted?", "correct": "Più opportunità, reputazione e influenza criminale, ma anche maggiore esposizione alla Giustizia.", "wrong": ["Solo vantaggi economici.", "Immunità crescente dai controlli di polizia."], "ex": "Più notorietà significa anche più attenzione e conseguenze potenzialmente più pesanti."}, {"cat": "Wanted System", "q": "Le Stelle Wanted sono statiche?", "correct": "No, possono aumentare, diminuire o restare invariate in base all’evoluzione del personaggio.", "wrong": ["Sì, una volta ottenute restano per sempre.", "Possono solo aumentare."], "ex": "Il Wanted System è dinamico."}, {"cat": "Dinamiche tra Fazioni", "q": "Nella situazione 'Normale' tra fazioni sono consentite alleanze?", "correct": "No. Sono possibili accordi, favori, scambi, informazioni e collaborazioni, ma non alleanze.", "wrong": ["Sì, qualsiasi alleanza è consentita.", "Sì, ma solo tra due fazioni."], "ex": "Le collaborazioni sono possibili, le alleanze no."}, {"cat": "Dinamiche tra Fazioni", "q": "Qual è lo scopo della fase di Tensione?", "correct": "Far evolvere il rapporto con pressioni, avvertimenti, provocazioni, sabotaggi limitati o negoziazioni.", "wrong": ["Autorizzare immediatamente una guerra.", "Concludere il conflitto entro 24 ore."], "ex": "La Tensione deve far evolvere la storia, non trasformarsi automaticamente in guerra."}, {"cat": "Dinamiche tra Fazioni", "q": "La Rivalità autorizza automaticamente il Permadeath?", "correct": "No.", "wrong": ["Sì, se entrambe le fazioni sono ufficiali.", "Sì, dopo tre azioni ostili."], "ex": "La Rivalità consente azioni più incisive ma non autorizza automaticamente il Permadeath."}, {"cat": "Dinamiche tra Fazioni", "q": "Cosa caratterizza la fase di Crisi?", "correct": "Il conflitto ha raggiunto il massimo e deve avere un obiettivo concreto, portando verso una risoluzione o un’ulteriore evoluzione.", "wrong": ["Le regole di Fear vengono sospese.", "Scatta automaticamente la guerra totale."], "ex": "La Crisi non elimina Fear e Roleplay e deve portare il conflitto verso una direzione concreta."}, {"cat": "Dinamiche tra Fazioni", "q": "Qual è il principio fondamentale di un conflitto tra fazioni?", "correct": "Deve evolvere e creare conseguenze e nuove storie, non diventare una successione di sparatorie senza scopo.", "wrong": ["Deve sempre concludersi con la vittoria militare di una fazione.", "Deve essere risolto solo attraverso denaro."], "ex": "Lo scopo è generare RP, conseguenze e sviluppo narrativo."}, {"cat": "Assistenza, Discord e IA", "q": "Come si contatta lo Staff per assistenza?", "correct": "Aprendo un ticket con prove disponibili, screenshot/clip e breve spiegazione.", "wrong": ["Scrivendo in privato a uno Staffer.", "Taggando lo Staff in una chat pubblica."], "ex": "È vietato contattare privatamente lo Staff per assistenza."}, {"cat": "Assistenza, Discord e IA", "q": "Cosa può succedere a un ticket privo di materiale sufficiente?", "correct": "Può non essere preso in esame e, dopo 24 ore, può essere chiuso.", "wrong": ["Viene automaticamente approvato.", "Resta aperto obbligatoriamente per almeno 7 giorni."], "ex": "Il regolamento richiede materiale sufficiente a supporto del ticket."}, {"cat": "Assistenza, Discord e IA", "q": "Cosa prevede la regola 'No rivalutazioni'?", "correct": "La decisione dello Staff va rispettata e perseverare nel contestarla può essere considerato comportamento non idoneo.", "wrong": ["Ogni decisione può essere rivalutata due volte.", "Si può sempre chiedere una seconda opinione in privato."], "ex": "La parola dello Staff è una sola e va rispettata."}, {"cat": "Assistenza, Discord e IA", "q": "Quale uso dell’IA è vietato?", "correct": "Modificare l’estetica dei PG, alterare personaggi o creare scene/documenti falsi da usare come contenuto IC.", "wrong": ["Creare grafiche pubblicitarie.", "Creare materiali promozionali che non falsificano il Roleplay."], "ex": "L’IA non può essere usata per falsificare il Roleplay o creare prove/contenuti IC falsi."}, {"cat": "Assistenza, Discord e IA", "q": "Quale uso dell’IA è consentito?", "correct": "Grafiche pubblicitarie, materiali promozionali e contenuti estetici che non alterino o falsifichino il Roleplay.", "wrong": ["Creare documenti falsi da usare IC.", "Creare scene di gioco false da usare come prova."], "ex": "L’IA è ammessa per contenuti promozionali ed estetici che non falsifichino l’RP."}];
+
+const el = id => document.getElementById(id);
+const shuffle = arr => {
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+};
+const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+
+let exam=[], current=0, answers=[];
+
+function show(id){
+  ['start','quiz','result'].forEach(x=>el(x).classList.toggle('active',x===id));
+}
+
+function startExam(custom=null){
+  if(custom){
+    exam = custom.map(q=>({...q, opts:shuffle([q.correct,...q.wrong])}));
+  } else {
+    const pool=shuffle(BANK);
+    const v=el('count').value;
+    const n=v==='all'?pool.length:Number(v);
+    exam=pool.slice(0,n).map(q=>({...q,opts:shuffle([q.correct,...q.wrong])}));
+  }
+  current=0;
+  answers=new Array(exam.length).fill(null);
+  show('quiz');
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function render(){
+  const q=exam[current];
+  el('progressText').textContent=`Domanda ${current+1} di ${exam.length}`;
+  el('bar').style.width=`${((current+1)/exam.length)*100}%`;
+  el('category').textContent=q.cat;
+  el('question').textContent=q.q;
+  const box=el('options'); box.innerHTML='';
+  q.opts.forEach(opt=>{
+    const d=document.createElement('div');
+    d.className='option'+(answers[current]===opt?' sel':'');
+    d.innerHTML=`<div class="dot"></div><div>${esc(opt)}</div>`;
+    d.onclick=()=>{answers[current]=opt;render()};
+    box.appendChild(d);
+  });
+  el('prev').disabled=current===0;
+  el('prev').style.opacity=current===0?'.45':'1';
+  el('next').textContent=current===exam.length-1?'Consegna esame':'Avanti';
+}
+
+function next(){
+  if(!answers[current]){alert('Seleziona una risposta prima di continuare.');return;}
+  if(current<exam.length-1){current++;render();window.scrollTo({top:0,behavior:'smooth'});}
+  else finish();
+}
+function prev(){ if(current>0){current--;render();window.scrollTo({top:0,behavior:'smooth'});} }
+
+function finish(){
+  const correct=exam.reduce((n,q,i)=>n+(answers[i]===q.correct?1:0),0);
+  const p=Math.round(correct/exam.length*100);
+  el('scoreText').textContent=`${correct} risposte esatte su ${exam.length}`;
+  el('pct').textContent=`${p}%`;
+  el('ring').style.background=`conic-gradient(var(--accent2) ${p*3.6}deg,#22384c 0deg)`;
+  el('scoreMsg').textContent =
+    p>=90?'Preparazione eccellente: conoscenza molto solida del regolamento.'
+    :p>=75?'Buona preparazione. Ripassa gli errori prima dell’esame.'
+    :p>=60?'Preparazione discreta, ma ci sono diverse regole da consolidare.'
+    :'Conviene ripassare il regolamento e rifare il test.';
+
+  const r=el('review'); r.innerHTML='';
+  exam.forEach((q,i)=>{
+    const ok=answers[i]===q.correct;
+    const d=document.createElement('div');
+    d.className='reviewItem '+(ok?'ok':'bad');
+    d.innerHTML=`
+      <h3>${i+1}. ${esc(q.q)}</h3>
+      <p class="${ok?'good':'badtxt'}">${ok?'✓ Risposta corretta':'✗ Risposta errata'}</p>
+      ${ok?'':`<p><span class="muted">Hai risposto:</span> ${esc(answers[i]||'Nessuna risposta')}</p>
+      <p><span class="muted">Risposta esatta:</span> <span class="good">${esc(q.correct)}</span></p>`}
+      <p>${esc(q.ex)}</p>
+    `;
+    r.appendChild(d);
+  });
+  show('result');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+el('startBtn').onclick=()=>startExam();
+el('next').onclick=next;
+el('prev').onclick=prev;
+el('restart').onclick=()=>{show('start');window.scrollTo({top:0,behavior:'smooth'});}
+el('retryWrong').onclick=()=>{
+  const wrong=exam.filter((q,i)=>answers[i]!==q.correct);
+  if(!wrong.length){alert('Nessun errore da ripassare. Ottimo lavoro!');return;}
+  startExam(wrong);
+};
+</script>
+</body>
+</html>
